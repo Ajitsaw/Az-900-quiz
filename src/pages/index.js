@@ -12,10 +12,13 @@ export default function QuizApp() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadNewQuestion();
+    // load initial question once
+    const newQuestion = getRandomQuestion();
+    setCurrentQuestion(newQuestion);
     setIsLoading(false);
   }, []);
 
+  
   const loadNewQuestion = () => {
     const newQuestion = getRandomQuestion(currentQuestion?.id);
     setCurrentQuestion(newQuestion);
