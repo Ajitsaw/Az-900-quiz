@@ -2,7 +2,6 @@
   "name": "az-900",
   "version": "0.1.0",
   "private": true,
-  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,16 +11,13 @@
     "deploy": "gh-pages -d out"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "next": "15.5.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
+    "eslint": "^8.0.0",
     "eslint-config-next": "15.5.4",
-    "@eslint/eslintcdn": "^3",
     "gh-pages": "^6.0.0"
   },
   "homepage": "https://yourusername.github.io/az-900"
