@@ -3,15 +3,17 @@
 import { useState, useEffect } from 'react';
 import { getRandomQuestion } from '../data/questions';
 
-export default function Home() {
+export default function QuizApp() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState(new Set());
+  const [totalQuestions] = useState(100);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load initial random question
     loadNewQuestion();
+    setIsLoading(false);
   }, []);
 
   const loadNewQuestion = () => {
@@ -36,75 +38,99 @@ export default function Home() {
     loadNewQuestion();
   };
 
-  if (!currentQuestion) {
+  if (isLoading || !currentQuestion) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading quiz...</div>
+        <div className="loading">
+          <div className="loading-spinner"></div>
+        </div>
       </div>
     );
   }
 
+  const progressPercentage = (answeredQuestions.size / totalQuestions) * 100;
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="quiz-container">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-          Quiz Application
-        </h1>
+        <div className="quiz-header">
+          <h1>Azure Certification Quiz</h1>
+        </div>
         
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="mb-4">
-            <span className="text-sm text-gray-600">Question ID: {currentQuestion.id}</span>
-          </div>
-          
-          <h2 className="text-xl font-semibold mb-6 text-gray-700">
-            {currentQuestion.question}
-          </h2>
-
-          <div className="space-y-3">
-            {currentQuestion.options.map((option, index) => (
-              <label 
-                key={index}
-                className={`option-label ${selectedOption === option ? 'selected' : ''}`}
-              >
-                <input
-                  type="radio"
-                  name="quiz-option"
-                  value={option}
-                  checked={selectedOption === option}
-                  onChange={() => handleOptionChange(option)}
-                  className="option-input"
-                />
-                <span className="text-gray-700">{option}</span>
-              </label>
-            ))}
-          </div>
-
-          {showAnswer && (
-            <div className="answer-reveal mt-4">
-              <strong>Correct Answer:</strong> {currentQuestion.answer}
+        <div className="quiz-content">
+          <div className="question-section">
+            <div className="question-meta">
+              <span className="question-number">Question {currentQuestion.id}</span>
+              <span className="question-progress">{answeredQuestions.size} of {totalQuestions} answered</span>
             </div>
-          )}
+            
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            
+            <h2 className="question-text">{currentQuestion.question}</h2>
 
-          <div className="flex justify-between mt-8">
+            <div className="options-container">
+              {currentQuestion.options.map((option, index) => (
+                <label 
+                  key={index}
+                  className={`option-label ${selectedOption === option ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name="quiz-option"
+                    value={option}
+                    checked={selectedOption === option}
+                    onChange={() => handleOptionChange(option)}
+                    className="option-input"
+                  />
+                  <span className="option-text">{option}</span>
+                </label>
+              ))}
+            </div>
+
+            {showAnswer && (
+              <div className="answer-reveal">
+                <h3>✅ Correct Answer:</h3>
+                <p>{currentQuestion.answer}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="quiz-controls">
             <button
               onClick={handleRevealAnswer}
-              disabled={showAnswer}
-              className={`btn ${showAnswer ? 'btn-secondary' : 'btn-primary'} ${showAnswer ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={showAnswer || !selectedOption}
+              className={`btn ${showAnswer ? 'btn-secondary' : 'btn-success'} ${!selectedOption ? '' : 'btn-pulse'}`}
             >
-              {showAnswer ? 'Answer Revealed' : 'Reveal Answer'}
+              {showAnswer ? '✓ Answer Revealed' : '🔍 Reveal Answer'}
             </button>
 
             <button
               onClick={handleNextQuestion}
               className="btn btn-primary"
             >
-              Next Question
+              Next Question →
             </button>
           </div>
-        </div>
 
-        <div className="text-center text-sm text-gray-600">
-          Answered: {answeredQuestions.size} questions
+          <div className="quiz-stats">
+            <div className="stat-item">
+              <span className="stat-number">{answeredQuestions.size}</span>
+              <span className="stat-label">Answered</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{totalQuestions - answeredQuestions.size}</span>
+              <span className="stat-label">Remaining</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{Math.round(progressPercentage)}%</span>
+              <span className="stat-label">Complete</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
