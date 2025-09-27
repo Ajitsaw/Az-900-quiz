@@ -117,7 +117,7 @@ export default function QuizApp() {
             </button>
           </div>
 
-          <div className="quiz-stats">
+          <div className="quiz-stats test">
             <div className="stat-item">
               <span className="stat-number">{answeredQuestions.size}</span>
               <span className="stat-label">Answered</span>
