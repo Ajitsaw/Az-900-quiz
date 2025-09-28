@@ -12,7 +12,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // load initial question once
     const newQuestion = getRandomQuestion();
     setCurrentQuestion(newQuestion);
     setIsLoading(false);
