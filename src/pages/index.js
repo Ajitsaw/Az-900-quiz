@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getRandomQuestion } from '../data/questions';
 
-export default function QuizApp() {
+export default function Home() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
@@ -18,7 +18,7 @@ export default function QuizApp() {
     setIsLoading(false);
   }, []);
 
-  
+
   const loadNewQuestion = () => {
     const newQuestion = getRandomQuestion(currentQuestion?.id);
     setCurrentQuestion(newQuestion);
