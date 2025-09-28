@@ -6,7 +6,8 @@ const nextConfig = {
     unoptimized: true
   },
   reactStrictMode: true,
-  // Base path for GitHub Pages
+  // Remove basePath and assetPrefix - let GitHub Actions handle this
+  // OR use environment-based configuration:
   basePath: process.env.NODE_ENV === 'production' ? '/az-900' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/az-900/' : '',
 }
